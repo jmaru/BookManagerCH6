@@ -9,46 +9,39 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var books = [
-        Book(
-            title:"The fellowship of the Ring",
-            author:"J.R.R. Tolkien",
-            cover:"lotr_fellowship",
-            summary:"Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of 'de Finibus Bonorum et Malorum' (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, 'Lorem ipsum dolor sit amet..', comes from a line in section 1.10.32. \n\n The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from 'de Finibus Bonorum et Malorum' by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.\n\n The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from 'de Finibus Bonorum et Malorum' by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
-        ),
-        Book(
-            title:"The two towers",
-            author:"J.R.R. Tolkien",
-            cover:"lotr_towers",
-            summary: "This is the second book in the LOTR trilogy."
-        ),
-        Book(
-            title:"The return of the King",
-            author:"J.R.R. Tolkien",
-            cover:"lotr_king",
-            summary: "This is the third book in the LOTR trilogy."
-        ),
-    ]
+    @State var books = getBooks()
+    @State private var showAddSheet = false
+    @State private var newBook = getNewBook()
+
 // Swift UI is declarative not imperative programming
     var body: some View {
-        NavigationStack{
-            List(books, id:\.self.id){ book in
-                NavigationLink(destination: DetailView(book: book)){
-                    HStack{
-                        Image(book.cover)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 60, height: 60)
-                        VStack(alignment: .leading){//LTR vs RTL
-                            Text(book.title)
-                                .font(.headline)
-                                .fontWeight(.bold)
-                            Text(book.author)
-                        }
+        TabView{
+            NavigationStack{
+                List($books, id:\.self.id){ $book in
+                    NavigationLink(destination: DetailView(book: $book)){
+                        ListItemView(book: book)
                     }
                 }
+                .navigationTitle("Book Manager")
+                .navigationBarItems(trailing: Button("Add", action:{
+                    showAddSheet.toggle()
+                }))
+                .sheet(isPresented: $showAddSheet){
+                    // onDismiss
+                    if(!newBook.title.isEmpty){
+                        books.append(newBook)
+                    }
+                    newBook = getNewBook()
+                }content:{
+                    AddEditView(book: $newBook)
+                }
+            }.tabItem {
+                Label("Books", systemImage: "books.vertical.fill")
             }
-            .navigationTitle("Book Manager")
+            FavoritesView(books:  $books)
+                .tabItem {
+                    Label("Favorites", systemImage: "heart.fill")
+                }
         }
     }
 
