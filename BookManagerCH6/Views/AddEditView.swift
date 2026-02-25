@@ -38,6 +38,11 @@ struct AddEditView: View {
                     TextField("Author", text: $author)
                     TextEditor(text: $summary)
                         .frame(height: 150)
+                    Picker("Genre", selection: $book.genre){
+                        ForEach(Genre.allCases, id:\.self){ genre in
+                            Text(genre.rawValue).tag(genre)
+                        }
+                    }
                 }
                 Section(header: Text("Review")){
 //                    Picker("Rating", selection:$rating){

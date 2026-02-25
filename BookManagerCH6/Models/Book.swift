@@ -13,10 +13,14 @@ struct Book: Identifiable, Hashable {
     var author: String
     var cover: String
     var summary: String
-    //Added 2 new values 105-4
+    //Added 2 new properties 105-4
     var rating: Int = 0
     var review: String = ""
     
     //Add a new one 106-1
     var isFavorite: Bool = false
+    
+    //Add 2 new properties
+    var genre: Genre = .unknown
+    var readingStatus: ReadingStatus = .unknown
 }

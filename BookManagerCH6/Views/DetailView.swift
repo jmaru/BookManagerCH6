@@ -30,12 +30,14 @@ struct DetailView: View {
                         Text("by \(book.author)")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
+                        HStack{
+                            CustomCapsule(text: book.genre.rawValue, color:.red)
+                            Spacer()
+                            FavoriteToggle(isFavorite: $book.isFavorite)
+                        }
                     }
                 }
-                HStack{
-                    Spacer()
-                    FavoriteToggle(isFavorite: $book.isFavorite)
-                }
+                
                 Text(book.summary)
                 //summary
                 if(book.rating > 0 || !book.review.isEmpty){
