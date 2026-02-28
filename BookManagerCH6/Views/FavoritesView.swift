@@ -12,11 +12,17 @@ struct FavoritesView: View {
     @Binding var books: [Book]
     @State private var isFilterSheetPresented: Bool = false
     @State private var selectedGenre: Genre?
+    @State private var selectedReadingStatus: ReadingStatus?
+    @AppStorage(SETTINGS_GRID_COLUMNS) private var gridColumns: Int = 2
     
     //computed property
     private var favoriteBooks: [Book] {
-        filterFavoriteBooks(books: books, genre: selectedGenre)
+        filterFavoriteBooks(books: books, genre: selectedGenre, readingStatus: selectedReadingStatus)
     }
+    
+    private var gridLayout: [GridItem] {
+        Array(repeating: GridItem(.flexible()), count: gridColumns)
+    } // [GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View {
         NavigationStack{
@@ -24,11 +30,14 @@ struct FavoritesView: View {
                 if selectedGenre != nil {
                     Text("Filtering by genre: \(selectedGenre!.rawValue)")
                 }
+                if selectedReadingStatus != nil {
+                    Text("Filtering by status: \(selectedReadingStatus!.rawValue)")
+                }
                 if favoriteBooks.isEmpty {
                     Text("No favorite books")
                         .foregroundColor(.secondary)
                 } else{
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]){
+                    LazyVGrid(columns: gridLayout){
                         ForEach(favoriteBooks){ book in
                             SquareCardView(book:book)
                         }
@@ -45,7 +54,7 @@ struct FavoritesView: View {
                 }
             }
             .sheet(isPresented: $isFilterSheetPresented) {
-                    FilterOptionsView(selectedGenre: $selectedGenre)
+                    FilterOptionsView(selectedGenre: $selectedGenre, selectedReadingStatus: $selectedReadingStatus)
             }
         }
     }
@@ -67,12 +76,16 @@ struct FavoritesView: View {
 ]*/
 
 // filterfavoriteBooks // genre: .classic
-func filterFavoriteBooks(books: [Book], genre: Genre?) -> [Book] {
+func filterFavoriteBooks(books: [Book], genre: Genre?, readingStatus: ReadingStatus?) -> [Book] {
     return books.filter{
         $0.isFavorite //true
         && (
             genre == nil //false
             || $0.genre == genre //false
         ) //false
+        && (
+            readingStatus == nil
+            || $0.readingStatus == readingStatus
+        )
     }
 }

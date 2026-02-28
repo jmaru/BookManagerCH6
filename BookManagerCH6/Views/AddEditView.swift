@@ -51,6 +51,11 @@ struct AddEditView: View {
 //                            Text("\($0)").tag($0)
 //                        }
 //                    }
+                    Picker("Reading status", selection: $book.readingStatus){
+                        ForEach(ReadingStatus.allCases, id:\.self){ readingStatus in
+                            Text(readingStatus.rawValue).tag(readingStatus)
+                        }
+                    }
                     StarRatingField(rating: $rating)
                     TextEditor(text: $review)
                         .frame(height: 150)

@@ -32,6 +32,7 @@ struct DetailView: View {
                             .foregroundColor(.secondary)
                         HStack{
                             CustomCapsule(text: book.genre.rawValue, color:.red)
+                            CustomCapsule(text: book.readingStatus.rawValue, color:.blue)
                             Spacer()
                             FavoriteToggle(isFavorite: $book.isFavorite)
                         }

@@ -17,7 +17,7 @@ struct ListItemView: View {
                 .scaledToFit()
                 .frame(width: 60, height: 60)
             VStack(alignment: .leading){//LTR vs RTL
-                Text(book.title)
+                Text(book.title.capitalized(with: .current))
                     .font(.headline)
                     .fontWeight(.bold)
                     .lineLimit(1)
