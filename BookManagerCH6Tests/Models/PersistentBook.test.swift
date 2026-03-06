@@ -5,7 +5,7 @@
 //  Created by Jorge Gabriel Marin Urias on 3/3/26.
 //
 
-import Testing
+import Testing //Swift Testing
 @testable import BookManagerCH6
 import Foundation
 
@@ -68,5 +68,18 @@ struct PersistentBookTests {
         #expect(book.isFavorite == isFavorite)
         #expect(book.genre == genre)
         #expect(book.readingStatus == readingStatus)
+        
+        let book2 = PersistentBook(book)
+        
+        // Assertion
+        #expect(book2.title == title)
+        #expect(book2.author == author)
+        #expect(book2.coverData == coverData)
+        #expect(book2.summary == summary)
+        #expect(book2.rating == rating)
+        #expect(book2.review == review)
+        #expect(book2.isFavorite == isFavorite)
+        #expect(book2.genre == genre)
+        #expect(book2.readingStatus == readingStatus)
     }
 }

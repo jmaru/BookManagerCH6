@@ -26,6 +26,18 @@ class PersistentBook {
     var genre: Genre
     var readingStatus: ReadingStatus
     
+    init(_ book: PersistentBook){
+        self.title = book.title
+        self.author = book.author
+        self.coverData = book.coverData
+        self.summary = book.summary
+        self.rating = book.rating
+        self.review = book.review
+        self.isFavorite = book.isFavorite
+        self.genre = book.genre
+        self.readingStatus = book.readingStatus
+    }
+    
     init(
         title: String,
         author: String = "",
