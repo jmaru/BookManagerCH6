@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FavoritesView: View {
     
-    @Binding var books: [Book]
+    @Query var books: [PersistentBook]
     @State private var isFilterSheetPresented: Bool = false
     @State private var selectedGenre: Genre?
     @State private var selectedReadingStatus: ReadingStatus?
     @AppStorage(SETTINGS_GRID_COLUMNS) private var gridColumns: Int = 2
     
     //computed property
-    private var favoriteBooks: [Book] {
+    private var favoriteBooks: [PersistentBook] {
         filterFavoriteBooks(books: books, genre: selectedGenre, readingStatus: selectedReadingStatus)
     }
     
@@ -76,7 +77,7 @@ struct FavoritesView: View {
 ]*/
 
 // filterfavoriteBooks // genre: .classic
-func filterFavoriteBooks(books: [Book], genre: Genre?, readingStatus: ReadingStatus?) -> [Book] {
+func filterFavoriteBooks(books: [PersistentBook], genre: Genre?, readingStatus: ReadingStatus?) -> [PersistentBook] {
     return books.filter{
         $0.isFavorite //true
         && (

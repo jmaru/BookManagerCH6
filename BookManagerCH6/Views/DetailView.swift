@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DetailView: View {
     
-    @Binding var book: Book
+    var book: PersistentBook
     @State private var showEditSheet: Bool = false
+    @State private var isFavorite: Bool
+    @Environment(\.modelContext) private var modelContext
+    
+    init(book:PersistentBook){
+        self.book = book
+        self.isFavorite = book.isFavorite
+    }
     
     var body: some View {
         ScrollView{
@@ -18,7 +26,7 @@ struct DetailView: View {
                 //hstack
                 HStack{
                     //cover image
-                    Image(book.cover)
+                    Image(uiImage:book.cover)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 100, height: 150)
@@ -34,7 +42,11 @@ struct DetailView: View {
                             CustomCapsule(text: book.genre.rawValue, color:.red)
                             CustomCapsule(text: book.readingStatus.rawValue, color:.blue)
                             Spacer()
-                            FavoriteToggle(isFavorite: $book.isFavorite)
+                            FavoriteToggle(isFavorite: $isFavorite)
+                                .onChange(of:isFavorite){
+                                    book.isFavorite = isFavorite
+                                    try? modelContext.save()
+                                }
                         }
                     }
                 }
@@ -63,7 +75,8 @@ struct DetailView: View {
             showEditSheet.toggle()
         }))
         .sheet(isPresented: $showEditSheet) {
-            AddEditView(book: $book)
+            var _ = print(book.title)
+            AddEditView(book: book)
         }
     }
 }

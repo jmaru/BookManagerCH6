@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var books = getBooks()
     @AppStorage(SETTINGS_THEME_KEY) private var theme: Theme = .system
     @AppStorage(SETTINGS_ACCENT_COLOR_KEY) private var accentColor: Color = .blue
 
@@ -27,11 +26,11 @@ struct ContentView: View {
 // Swift UI is declarative not imperative programming
     var body: some View {
         TabView{
-            ListView(books: $books)
+            ListView()
                 .tabItem {
                     Label("Books", systemImage: "books.vertical.fill")
                 }
-            FavoritesView(books:  $books)
+            FavoritesView()
                 .tabItem {
                     Label("Favorites", systemImage: "heart.fill")
                 }

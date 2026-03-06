@@ -36,5 +36,5 @@ func getBooks() -> [Book] {
 }
 
 func getNewBook() -> Book {
-    Book(title:"", author:"", cover:"lotr_fellowship", summary: "")
+    Book(title:"", author:"", cover:"lotr_fellowship", summary: "", rating:1)
 }

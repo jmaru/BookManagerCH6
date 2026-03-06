@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ListView: View {
     
-    @Binding var books: [Book]
-    
+    @Query var books: [PersistentBook]
+    @Environment(\.modelContext) private var modelContext
     @State private var showAddSheet = false
-    @State private var newBook = getNewBook()
+//    @State private var newBook = getNewBook()
     
     var body: some View {
         NavigationStack{
-            List($books, id:\.self.id){ $book in
-                NavigationLink(destination: DetailView(book: $book)){
+            List(books, id:\.self.id){ book in
+                NavigationLink(destination: DetailView(book: book)){
                     ListItemView(book: book)
                 }
             }
@@ -27,12 +28,12 @@ struct ListView: View {
             }))
             .sheet(isPresented: $showAddSheet){
                 // onDismiss
-                if(!newBook.title.isEmpty){
-                    books.append(newBook)
-                }
-                newBook = getNewBook()
+//                if(!newBook.title.isEmpty){
+//                    books.append(newBook)
+//                }
+//                newBook = getNewBook()
             }content:{
-                AddEditView(book: $newBook)
+                AddEditView()
             }
         }
     }
